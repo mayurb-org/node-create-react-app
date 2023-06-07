@@ -34,12 +34,13 @@ jobs:
           GITHUB_REPOSITORY: ${{ env.GITHUB_REPOSITORY }}
         run: |
           python generate_explanation.py ${{ github.event.pull_request.diff_url }}
-          echo "explained=$(python generate_explanation.py ${{ github.event.pull_request.diff_url }} | base64 -w 0 )" >> $GITHUB_OUTPUT
+          echo "explained=$(python generate_explanation.py ${{ github.event.pull_request.diff_url }} )" >> $GITHUB_OUTPUT
+
+          echo $GITHUB_OUTPUT
 
       - name: Use Explanation in Workflow
         run: |
           echo "Explanation: ${{ steps.explanation.outputs.explained }}"
-          # Example: Add the explanation as a comment to the pull request
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ github.event.number }}
