@@ -69,4 +69,4 @@ changes = compare_data["files"]
 explanation = generate_explanation(changes)
 
 # Print or use the generated explanation as needed
-print("\n".join(explanation))
+print("\n".join(explanation.split("-")))
