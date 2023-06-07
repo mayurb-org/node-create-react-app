@@ -33,10 +33,10 @@ jobs:
           PR_NUMBER: ${{ github.event.number }}
           GITHUB_REPOSITORY: ${{ env.GITHUB_REPOSITORY }}
         run: |
-          python generate_explanation.py ${{ github.event.pull_request.diff_url }}
-          echo "explained=$(python generate_explanation.py ${{ github.event.pull_request.diff_url }} )" >> $GITHUB_OUTPUT
-
-          echo $GITHUB_OUTPUT
+          # python generate_explanation.py ${{ github.event.pull_request.diff_url }}
+          explanation=$(python generate_explanation.py)
+          # echo "::set-output name=explanation::$explanation"
+          echo "explained=$explanation" >> $GITHUB_OUTPUT
 
       - name: Use Explanation in Workflow
         run: |
