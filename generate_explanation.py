@@ -36,11 +36,22 @@ response = requests.get(pull_request_url, headers=headers)
 pull_request_data = response.json()
 
 # Retrieve the base and head commits
-base_commit = pull_request_data["base"]["sha"]
-head_commit = pull_request_data["head"]["sha"]
+base_commit_sha = pull_request_data["base"]["sha"]
+head_commit_sha = pull_request_data["head"]["sha"]
 
-# Compare the base and head commits to get the code changes
-compare_url = f"https://api.github.com/repos/{repository}/compare/{base_commit}...{head_commit}"
+# Get the base and head commit data
+commit_url = f"https://api.github.com/repos/{repository}/commits/"
+base_commit_url = commit_url + base_commit_sha
+head_commit_url = commit_url + head_commit_sha
+
+response = requests.get(base_commit_url, headers=headers)
+base_commit_data = response.json()
+
+response = requests.get(head_commit_url, headers=headers)
+head_commit_data = response.json()
+
+# Retrieve the files changed between base and head commits
+compare_url = f"https://api.github.com/repos/{repository}/compare/{base_commit_sha}...{head_commit_sha}"
 response = requests.get(compare_url, headers=headers)
 compare_data = response.json()
 
