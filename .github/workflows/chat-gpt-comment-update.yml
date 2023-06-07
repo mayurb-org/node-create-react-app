@@ -42,18 +42,18 @@ jobs:
         uses: actions/github-script@v4
         with:
           script: |
-            const { context, github } = require('@actions/github');
-
+            const { context: workflowContext, github } = require('@actions/github');
+          
             const comment = `Explanation of Changes:\n\n${{ steps.explanation.outputs.explanation }}`;
-
+          
             async function run() {
               const newComment = await github.issues.createComment({
-                ...context.repo,
-                issue_number: context.issue.number,
+                ...workflowContext.repo,
+                issue_number: workflowContext.issue.number,
                 body: comment
               });
-
+          
               console.log(`Comment added: ${newComment.data.html_url}`);
             }
-
+          
             run();
