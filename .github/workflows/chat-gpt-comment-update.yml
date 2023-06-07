@@ -35,12 +35,12 @@ jobs:
         run: |
           # python generate_explanation.py ${{ github.event.pull_request.diff_url }}
           OPENAI_EXPLANATION=$(python generate_explanation.py)
-          echo "explanation<<EOF" >> $GITHUB_ENV
-          echo $explanation >> $GITHUB_ENV
+          echo "OPENAI_EXPLANATION<<EOF" >> $GITHUB_ENV
+          echo $OPENAI_EXPLANATION >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
           
           echo "===================================="
-          echo $explanation
+          echo $OPENAI_EXPLANATION
           echo "===================================="
 
       - name: Use Explanation in Workflow
