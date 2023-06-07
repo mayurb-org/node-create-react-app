@@ -34,9 +34,12 @@ jobs:
           GITHUB_REPOSITORY: ${{ env.GITHUB_REPOSITORY }}
         run: |
           # python generate_explanation.py ${{ github.event.pull_request.diff_url }}
-          explanation=$(python generate_explanation.py)
-          # echo "::set-output name=explanation::$explanation"
+          explanation=$(python generate_explanation.py | base64)
+          echo "explanation<<EOF" >> $GITHUB_ENV
+          echo $explanation >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
           echo $explanation
+
           echo "explained=$explanation" >> $GITHUB_OUTPUT
 
       - name: Use Explanation in Workflow
