@@ -32,7 +32,6 @@ jobs:
         id: explanation
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }} # Accessing the secret value from github secrets
-          GITHUB_TOKEN: ${{ github.token }}
           PR_NUMBER: ${{ github.event.number }}
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
