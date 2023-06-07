@@ -42,7 +42,7 @@ repository = os.environ["GITHUB_REPOSITORY"]
 token = os.environ["GITHUB_TOKEN"]
 
 # Retrieve the files changed in the pull request
-pull_request_url = f"https://api.github.com/repos/{repository}/pulls/{pull_request_number}/files"
+pull_request_url = f"https://api.github.com/repos/{repository}/pulls/{pull_request_number}"
 headers = {
     "Accept": "application/vnd.github.v3+json",
     "Authorization": f"Bearer {token}",
@@ -50,7 +50,7 @@ headers = {
 response = requests.get(pull_request_url, headers=headers)
 pull_request_data = response.json()
 
-changes = pull_request_data["filename"]
+changes = pull_request_data["changed_files"]
 
 # Generate explanations for the code changes
 explanations = generate_explanation(changes)
