@@ -26,6 +26,11 @@ pull_request_number = os.environ["PR_NUMBER"]
 repository = os.environ["GITHUB_REPOSITORY"]
 token = os.environ["GH_TOKEN"]
 
+print("Pull Request Number:", pull_request_number)
+print("Repository:", repository)
+print("Token:", token)
+
+
 pull_request_url = f"https://api.github.com/repos/{repository}/pulls/{pull_request_number}"
 headers = {
     "Accept": "application/vnd.github.v3+json",
