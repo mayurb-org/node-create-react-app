@@ -2,6 +2,7 @@ import openai
 import os
 import requests
 import sys
+import json
 
 openai.api_key = os.environ['OPENAI_API_KEY']  # Replace with your OpenAI API key
 
@@ -24,7 +25,7 @@ def generate_explanation(changes):
 # Get the pull request information from GitHub API
 pull_request_number = os.environ["PR_NUMBER"]
 repository = os.environ["GITHUB_REPOSITORY"]
-token = os.environ["GH_TOKEN"]
+token = os.environ["GITHUB_TOKEN"]
 
 print("Pull Request Number:", pull_request_number)
 print("Repository:", repository)
