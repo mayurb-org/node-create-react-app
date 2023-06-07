@@ -27,7 +27,6 @@ jobs:
       - name: Generate explanation
         run: |
           ls
-          pwd
           python generate_explanation.py
 
       - name: Add Comment to Pull Request
