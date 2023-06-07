@@ -28,15 +28,6 @@ jobs:
           pip install openai
           pip install PyGithub
 
-      - name: Setup Nodejs    
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      - name: Install node dependencies
-        run: |
-          npm install -g @actions/github
-
       - name: Generate explanation
         id: explanation
         env:
