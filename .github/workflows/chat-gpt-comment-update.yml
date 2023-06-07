@@ -10,6 +10,9 @@ jobs:
   add_comment:
     runs-on: ubuntu-latest
 
+    outputs:
+      explained: ${{ steps.explanation.outputs.explained }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -40,6 +43,7 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }} # Accessing the secret value from github secrets
         run: |
           python generate_explanation.py ${{ github.event.pull_request.diff_url }}
+          echo "explained=$(python generate_explanation.py ${{ github.event.pull_request.diff_url }})" >> $GITHUB_OUTPUT
 
       - name: Use Explanation in Workflow
         run: |
@@ -48,21 +52,22 @@ jobs:
           # Example: Add the explanation as a comment to the pull request
 
       - name: Add Comment to Pull Request
-        uses: actions/github-script@v4
+        uses: actions/github-script@v6
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const { context: workflowContext, github: githubAPI } = require('@actions/github');
-
             const comment = `Explanation of Changes:\n\n${{ steps.explanation.outputs.explanation }}`;
-
+      
             async function run() {
-              const newComment = await githubAPI.issues.createComment({
-                ...workflowContext.repo,
-                issue_number: workflowContext.issue.number,
+              const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
+      
+              const newComment = await octokit.rest.issues.createComment({
+                ...context.repo,
+                issue_number: context.issue.number,
                 body: comment
               });
-
+      
               console.log(`Comment added: ${newComment.data.html_url}`);
             }
-
+      
             run();
