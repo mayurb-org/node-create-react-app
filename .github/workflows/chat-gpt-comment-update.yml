@@ -48,7 +48,7 @@ jobs:
       - name: Add Comment to Pull Request
         uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.GH_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const comment = `Explanation of Changes:\n\n${{ steps.explanation.outputs.explanation }}`;
       
