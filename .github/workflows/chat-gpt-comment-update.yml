@@ -45,22 +45,24 @@ jobs:
           PR_NUMBER: ${{ github.event.number }}
           GITHUB_REPOSITORY: ${{ github.repository }}
       
-      - name: Install @actions/github
-        run: npm install @actions/github
+      - name: Install @actions/github and @octokit/rest
+        run: npm install @actions/github @octokit/rest
 
       - name: Add Comment to Pull Request
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-              const { getOctokit, context: githubContext } = require('@actions/github');
+              const { Octokit } = require('@octokit/rest');
+              const { context: githubContext } = require('@actions/github');
+
+              const token = process.env.GITHUB_TOKEN;
+              const octokit = new Octokit({ auth: token });
 
               const comment = `Explanation of Changes:\n\n${{ steps.explanation.outputs.explanation }}`;
 
               async function run() {
-                const octokit = getOctokit(process.env.GITHUB_TOKEN);
-
-                const newComment = await octokit.rest.issues.createComment({
+                const newComment = await octokit.issues.createComment({
                   ...githubContext.repo,
                   issue_number: githubContext.issue.number,
                   body: comment
@@ -70,3 +72,4 @@ jobs:
               }
 
               run();
+          
