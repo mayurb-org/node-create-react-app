@@ -44,6 +44,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
           PR_NUMBER: ${{ github.event.number }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
 
       - name: Add Comment to Pull Request
         uses: actions/github-script@v6
