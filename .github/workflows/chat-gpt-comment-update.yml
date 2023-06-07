@@ -28,7 +28,7 @@ jobs:
       - name: Generate explanation
         id: explanation
         env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }} # Accessing the secret value
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }} # Accessing the secret value from github secrets
         run: |
           python generate_explanation.py ${{ github.event.pull_request.diff_url }}
 
