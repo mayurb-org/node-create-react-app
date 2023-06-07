@@ -42,14 +42,14 @@ jobs:
         uses: actions/github-script@v4
         with:
           script: |
-            const { context: workflowContext, github } = require('@actions/github');
+            const { context, github: githubAPI } = require('@actions/github');
           
             const comment = `Explanation of Changes:\n\n${{ steps.explanation.outputs.explanation }}`;
           
             async function run() {
-              const newComment = await github.issues.createComment({
-                ...workflowContext.repo,
-                issue_number: workflowContext.issue.number,
+              const newComment = await githubAPI.issues.createComment({
+                ...context.repo,
+                issue_number: context.issue.number,
                 body: comment
               });
           
