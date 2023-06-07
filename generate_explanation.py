@@ -3,36 +3,43 @@ import sys
 import openai
 import requests
 
-def fetch_pull_request_diff(diff_url):
-    # Fetch the pull request diff using the provided URL
-    response = requests.get(diff_url)
-    response.raise_for_status()
-    return response.text
+openai.api_key = "YOUR_API_KEY"  # Replace with your OpenAI API key
 
-def generate_explanation(diff):
-    # Authenticate with OpenAI
-    openai.api_key = os.environ['OPENAI_API_KEY']
+def generate_explanation(changes):
+    prompt = f"Changes: {changes}\n\nExplain the changes:"
 
-    # Preprocess the diff if needed
-    # (e.g., extract relevant lines, remove noise, format as desired)
-
-    # Generate explanation using the ChatGPT API
-    explanation = openai.Completion.create(
-        engine='text-davinci-002',
-        prompt=diff,
-        max_tokens=256,
+    response = openai.Completion.create(
+        engine="text-davinci-002",
+        prompt=prompt,
+        max_tokens=100,
+        temperature=0.7,
         n=1,
-        stop=None
-    ).choices[0].text.strip()
+        stop=None,
+        timeout=30,
+    )
 
+    explanation = response.choices[0].text.strip()
     return explanation
 
-if __name__ == '__main__':
-    # Usage: python generate_explanation.py <pull_request_diff_url>
-    # Example: python generate_explanation.py https://github.com/user/repo/pull/123.diff
-    diff_url = sys.argv[1]
-    diff = fetch_pull_request_diff(diff_url)
-    explanation = generate_explanation(diff)
+# Get the pull request information from GitHub API
+pull_request_number = os.environ["PR_NUMBER"]
+repository = os.environ["GITHUB_REPOSITORY"]
+token = os.environ["GITHUB_TOKEN"]
 
-    # Print the explanation to be captured as the output in the workflow
-    print(explanation)
+pull_request_url = f"https://api.github.com/repos/{repository}/pulls/{pull_request_number}"
+headers = {
+    "Accept": "application/vnd.github.v3+json",
+    "Authorization": f"Bearer {token}",
+}
+
+response = requests.get(pull_request_url, headers=headers)
+pull_request_data = response.json()
+
+# Extract the code changes from the pull request
+changes = pull_request_data["body"]  # Assuming the changes are in the pull request body
+
+# Generate explanation using ChatGPT
+explanation = generate_explanation(changes)
+
+# Print or use the generated explanation as needed
+print(explanation)
