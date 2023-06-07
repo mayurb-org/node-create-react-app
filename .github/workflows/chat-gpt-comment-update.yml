@@ -32,6 +32,7 @@ jobs:
         id: explanation
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }} # Accessing the secret value from github secrets
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
           PR_NUMBER: ${{ github.event.number }}
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
@@ -43,14 +44,14 @@ jobs:
           echo "Explanation: ${{ steps.explanation.outputs.explanation }}"
           # Example: Add the explanation as a comment to the pull request
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
           PR_NUMBER: ${{ github.event.number }}
           GITHUB_REPOSITORY: ${{ github.repository }}
 
       - name: Add Comment to Pull Request
         uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GH_TOKEN }}
           script: |
             const comment = `Explanation of Changes:\n\n${{ steps.explanation.outputs.explanation }}`;
       

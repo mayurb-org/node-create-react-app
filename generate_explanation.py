@@ -24,7 +24,7 @@ def generate_explanation(changes):
 # Get the pull request information from GitHub API
 pull_request_number = os.environ["PR_NUMBER"]
 repository = os.environ["GITHUB_REPOSITORY"]
-token = os.environ["GITHUB_TOKEN"]
+token = os.environ["GH_TOKEN"]
 
 pull_request_url = f"https://api.github.com/repos/{repository}/pulls/{pull_request_number}"
 headers = {
