@@ -38,7 +38,7 @@ jobs:
 
       - name: Use Explanation in Workflow
         run: |
-          echo "Explanation: ${{ steps.explanation.outputs.explanation }}"
+          echo "Explanation: ${{ steps.explanation.outputs.explained }}"
           # Example: Add the explanation as a comment to the pull request
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -50,16 +50,18 @@ jobs:
 
       - name: Add Comment to Pull Request
         uses: actions/github-script@v6
+        env:
+          GH_TKN: ${{ secrets.GITHUB_TOKEN }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
               const { Octokit } = require('@octokit/rest');
               const { context: githubContext } = require('@actions/github');
 
-              const token = process.env.GITHUB_TOKEN;
+              const token = process.env.GH_TKN;
               const octokit = new Octokit({ auth: token });
 
-              const comment = `Explanation of Changes:\n\n${{ steps.explanation.outputs.explanation }}`;
+              const comment = `Explanation of Changes:\n\n${{ steps.explanation.outputs.explained }}`;
 
               async function run() {
                 const newComment = await octokit.issues.createComment({
