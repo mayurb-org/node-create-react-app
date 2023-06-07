@@ -31,7 +31,7 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }} # Accessing the secret value from github secrets
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           PR_NUMBER: ${{ github.event.number }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_REPOSITORY: ${{ env.GITHUB_REPOSITORY }}
         run: |
           python generate_explanation.py ${{ github.event.pull_request.diff_url }}
           echo "explained=$(python generate_explanation.py ${{ github.event.pull_request.diff_url }} | base64 -w 0 )" >> $GITHUB_OUTPUT
