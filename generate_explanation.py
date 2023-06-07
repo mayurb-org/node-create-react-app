@@ -18,7 +18,7 @@ def generate_explanation(diff):
 
     # Generate explanation using the ChatGPT API
     explanation = openai.Completion.create(
-        engine='text-davinci-003',
+        engine='text-davinci-002',
         prompt=diff,
         max_tokens=256,
         n=1,
