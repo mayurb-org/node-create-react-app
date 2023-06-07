@@ -25,12 +25,19 @@ jobs:
           pip install openai
 
       - name: Generate explanation
+        id: explanation
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }} # Accessing the secret value
         run: |
-          python generate_explanation.py
+          python generate_explanation.py "changes"
+
+      - name: Use Explanation in Workflow
+        run: |
+          echo "Explanation: ${{ steps.explanation.outputs.explanation }}"
+          # Use the explanation in subsequent steps of your workflow
+          # Example: Add the explanation as a comment to the pull request
 
       - name: Add Comment to Pull Request
         uses: unsplash/comment-on-pr@master
         with:
-          message: ${{ steps.generate_explanation.outputs.explanation }}
+          message: ${{ steps.explanation.outputs.explanation }}
