@@ -10,7 +10,7 @@ def generate_explanation(changes):
     prompt = f"Changes: {changes}\n\nExplain the changes:"
 
     response = openai.Completion.create(
-        engine="text-davinci-002",
+        engine="text-davinci-003",
         prompt=prompt,
         max_tokens=100,
         temperature=0.7,
