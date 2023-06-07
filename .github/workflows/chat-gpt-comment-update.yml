@@ -30,7 +30,7 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }} # Accessing the secret value
         run: |
-          ppython generate_explanation.py ${{ github.event.pull_request.diff_url }}
+          python generate_explanation.py ${{ github.event.pull_request.diff_url }}
 
       - name: Use Explanation in Workflow
         run: |
