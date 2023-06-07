@@ -4,11 +4,8 @@ on:
   pull_request:
   
 jobs:
-  add_comment:
+  chatgpt_add_comment:
     runs-on: ubuntu-latest
-
-    outputs:
-      explained: ${{ steps.explanation.outputs.explained }}
 
     steps:
       - name: Checkout repository
@@ -33,7 +30,6 @@ jobs:
           PR_NUMBER: ${{ github.event.number }}
           GITHUB_REPOSITORY: ${{ env.GITHUB_REPOSITORY }}
         run: |
-          # python generate_explanation.py ${{ github.event.pull_request.diff_url }}
           OPENAI_EXPLANATION=$(python generate_explanation.py)
           echo "OPENAI_EXPLANATION<<EOF" >> $GITHUB_ENV
           echo $OPENAI_EXPLANATION >> $GITHUB_ENV
