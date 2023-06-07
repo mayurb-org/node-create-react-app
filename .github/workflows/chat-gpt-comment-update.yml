@@ -39,7 +39,6 @@ jobs:
       - name: Use Explanation in Workflow
         run: |
           echo "Explanation: ${{ steps.explanation.outputs.explanation }}"
-          # Use the explanation in subsequent steps of your workflow
           # Example: Add the explanation as a comment to the pull request
         env:
           GITHUB_TOKEN: ${{ github.token }}
