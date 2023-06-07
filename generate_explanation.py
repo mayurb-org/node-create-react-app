@@ -27,6 +27,7 @@ pull_request_number = os.environ["PR_NUMBER"]
 repository = os.environ["GITHUB_REPOSITORY"]
 token = os.environ["GITHUB_TOKEN"]
 
+# print the values for troubleshooting
 print("Pull Request Number:", pull_request_number)
 print("Repository:", repository)
 print("Token:", token)
