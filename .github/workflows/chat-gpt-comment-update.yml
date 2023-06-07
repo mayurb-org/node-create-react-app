@@ -53,16 +53,16 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-              const { Octokit, context: githubContext } = require('@actions/github');
+              const { Octokit } = require('@actions/github');
             
               const comment = `Explanation of Changes:\n\n${{ steps.explanation.outputs.explanation }}`;
               
               async function run() {
-                const octokit = new Octokit(process.env.GITHUB_TOKEN);
+                const octokit = Octokit.getOctokit(process.env.GITHUB_TOKEN);
               
                 const newComment = await octokit.rest.issues.createComment({
-                  ...githubContext.repo,
-                  issue_number: githubContext.issue.number,
+                  ...github.context.repo,
+                  issue_number: github.context.issue.number,
                   body: comment
                 });
               
