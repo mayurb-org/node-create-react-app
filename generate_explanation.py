@@ -55,7 +55,7 @@ headers = {
 response = requests.get(pull_request_url, headers=headers)
 pull_request_data = response.json()
 
-changes = pull_request_data["changed_files"]
+changes = pull_request_data.get("changed_files", [])
 
 # Generate explanations for the code changes
 explanations = generate_explanation(changes)
