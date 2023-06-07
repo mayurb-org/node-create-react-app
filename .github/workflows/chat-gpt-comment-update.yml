@@ -25,8 +25,9 @@ jobs:
           pip install openai
 
       - name: Generate explanation
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }} # Accessing the secret value
         run: |
-          ls
           python generate_explanation.py
 
       - name: Add Comment to Pull Request
