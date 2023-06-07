@@ -34,17 +34,18 @@ jobs:
           GITHUB_REPOSITORY: ${{ env.GITHUB_REPOSITORY }}
         run: |
           # python generate_explanation.py ${{ github.event.pull_request.diff_url }}
-          explanation=$(python generate_explanation.py)
+          OPENAI_EXPLANATION=$(python generate_explanation.py)
           echo "explanation<<EOF" >> $GITHUB_ENV
           echo $explanation >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
+          
+          echo "===================================="
           echo $explanation
-
-          echo "explained=$explanation" >> $GITHUB_OUTPUT
+          echo "===================================="
 
       - name: Use Explanation in Workflow
         run: |
-          echo "Explanation: ${{ steps.explanation.outputs.explained }}"
+          echo "Explanation: ${{ env.OPENAI_EXPLANATION }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ github.event.number }}
@@ -66,7 +67,7 @@ jobs:
               const token = process.env.GH_TKN;
               const octokit = new Octokit({ auth: token });
 
-              const comment = `Explanation of Changes:\n\n${{ steps.explanation.outputs.explained }}`;
+              const comment = `Explanation of Changes:\n\n${{ env.OPENAI_EXPLANATION }}`;
 
               async function run() {
                 const newComment = await octokit.issues.createComment({
