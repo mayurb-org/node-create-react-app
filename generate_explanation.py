@@ -7,16 +7,18 @@ import json
 openai.api_key = os.environ['OPENAI_API_KEY']  # Replace with your OpenAI API key
 
 def generate_explanation(changes):
-    
     if not isinstance(changes, list):
         print("Error: Changes must be a list.")
         return []
-    
+
     explanations = []
 
     for change in changes:
-        file_name = change["filename"]
-        patch = change["patch"]
+        file_name = change.get("filename")
+        patch = change.get("patch")
+
+        if file_name is None or patch is None:
+            continue
 
         # Extract the code snippet from the change
         code_lines = []
