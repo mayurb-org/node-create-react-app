@@ -28,9 +28,9 @@ repository = os.environ["GITHUB_REPOSITORY"]
 token = os.environ["GITHUB_TOKEN"]
 
 # print the values for troubleshooting
-print("Pull Request Number:", pull_request_number)
-print("Repository:", repository)
-print("Token:", token)
+# print("Pull Request Number:", pull_request_number)
+# print("Repository:", repository)
+# print("Token:", token)
 
 
 pull_request_url = f"https://api.github.com/repos/{repository}/pulls/{pull_request_number}"
@@ -69,4 +69,4 @@ changes = compare_data["files"]
 explanation = generate_explanation(changes)
 
 # Print or use the generated explanation as needed
-print(explanation)
+print("\n".join(explanation))
