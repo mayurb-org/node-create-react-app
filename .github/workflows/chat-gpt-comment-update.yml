@@ -36,6 +36,7 @@ jobs:
           # python generate_explanation.py ${{ github.event.pull_request.diff_url }}
           explanation=$(python generate_explanation.py)
           # echo "::set-output name=explanation::$explanation"
+          echo $explanation
           echo "explained=$explanation" >> $GITHUB_OUTPUT
 
       - name: Use Explanation in Workflow
