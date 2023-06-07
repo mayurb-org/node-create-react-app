@@ -43,6 +43,7 @@ jobs:
           # Example: Add the explanation as a comment to the pull request
         env:
           GITHUB_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.number }}
 
       - name: Add Comment to Pull Request
         uses: actions/github-script@v6
