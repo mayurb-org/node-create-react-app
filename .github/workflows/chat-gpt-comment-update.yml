@@ -2,10 +2,7 @@ name: Add Comment to Pull Request
 
 on:
   pull_request:
-    types:
-      - opened
-      - synchronize
-
+  
 jobs:
   add_comment:
     runs-on: ubuntu-latest
