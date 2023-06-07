@@ -35,17 +35,17 @@ headers = {
 response = requests.get(pull_request_url, headers=headers)
 pull_request_data = response.json()
 
-# Extract the code changes from the pull request diff
-diff_url = pull_request_data["diff_url"]
-response = requests.get(diff_url, headers=headers)
-diff_content = response.text
+# Retrieve the base and head commits
+base_commit = pull_request_data["base"]["sha"]
+head_commit = pull_request_data["head"]["sha"]
 
-# Parse the code changes from the diff content
-changes = ""
-lines = diff_content.split("\n")
-for line in lines:
-    if line.startswith("+") or line.startswith("-"):
-        changes += line + "\n"
+# Compare the base and head commits to get the code changes
+compare_url = f"https://api.github.com/repos/{repository}/compare/{base_commit}...{head_commit}"
+response = requests.get(compare_url, headers=headers)
+compare_data = response.json()
+
+# Extract the code changes from the compare data
+changes = compare_data["files"]
 
 # Generate explanation using ChatGPT
 explanation = generate_explanation(changes)
