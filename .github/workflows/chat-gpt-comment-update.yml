@@ -34,7 +34,7 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }} # Accessing the secret value from github secrets
         run: |
           python generate_explanation.py ${{ github.event.pull_request.diff_url }}
-          echo "explained=$(python generate_explanation.py ${{ github.event.pull_request.diff_url }})" >> $GITHUB_OUTPUT
+          echo "explained=$(python generate_explanation.py ${{ github.event.pull_request.diff_url }} | base64 -w 0 )" >> $GITHUB_OUTPUT
 
       - name: Use Explanation in Workflow
         run: |
