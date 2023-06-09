@@ -60,7 +60,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
               const { Octokit } = require('@octokit/rest');
-              const { context: githubContext } = require('@actions/github');
+              const { context: githubContext } = require('@actions/github');l0
 
               const token = process.env.GH_TKN;
               const octokit = new Octokit({ auth: token });

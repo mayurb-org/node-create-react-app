@@ -1,37 +1,35 @@
 import openai
 import os
 import requests
-import sys
-import json
 
 openai.api_key = os.environ['OPENAI_API_KEY']  # Replace with your OpenAI API key
 
 def generate_explanation(changes):
-    prompt = f"Changes: {changes}\n\nExplain the changes:"
+    explanations = []
 
-    response = openai.Completion.create(
-        engine="text-davinci-003",
-        prompt=prompt,
-        max_tokens=200,
-        temperature=0.7,
-        n=1,
-        stop=None,
-        timeout=30,
-    )
+    # Iterate over batches of changes
+    for batch in changes:
+        prompt = f"Changes: {batch}\n\nExplain the changes:"
 
-    explanation = response.choices[0].text.strip()
-    return explanation
+        response = openai.Completion.create(
+            engine="text-davinci-003",
+            prompt=prompt,
+            max_tokens=200,
+            temperature=0.7,
+            n=1,
+            stop=None,
+            timeout=30,
+        )
+
+        explanation = response.choices[0].text.strip()
+        explanations.append(explanation)
+
+    return explanations
 
 # Get the pull request information from GitHub API
 pull_request_number = os.environ["PR_NUMBER"]
 repository = os.environ["GITHUB_REPOSITORY"]
 token = os.environ["GITHUB_TOKEN"]
-
-# print the values for troubleshooting
-# print("Pull Request Number:", pull_request_number)
-# print("Repository:", repository)
-# print("Token:", token)
-
 
 pull_request_url = f"https://api.github.com/repos/{repository}/pulls/{pull_request_number}"
 headers = {
@@ -65,8 +63,16 @@ compare_data = response.json()
 # Extract the code changes from the compare data
 changes = compare_data["files"]
 
-# Generate explanation using ChatGPT
-explanation = generate_explanation(changes)
+# Split changes into batches
+batch_size = 5  # Adjust the batch size as needed
+change_batches = [changes[i:i+batch_size] for i in range(0, len(changes), batch_size)]
 
-# Print or use the generated explanation as needed
-print("\n".join(explanation.split("-")))
+# Generate explanations using ChatGPT for each batch
+explanations = []
+for batch in change_batches:
+    batch_explanations = generate_explanation(batch)
+    explanations.extend(batch_explanations)
+
+# Print or use the generated explanations as needed
+for explanation in explanations:
+    print("\n".join(explanation.split("-")))
